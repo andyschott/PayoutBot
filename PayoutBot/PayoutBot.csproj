@@ -1,7 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
+  <ItemGroup>
+    <ProjectReference Include="..\PayoutBot.Discord\PayoutBot.Discord.csproj" />
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>a1063356-edc3-4e1c-b547-fef10bcd95de</UserSecretsId>
   </PropertyGroup>
-
 </Project>

@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PayoutBot.Discord.Configuration;
+using PayoutBot.Models;
+using PayoutBot.Services;
 
 namespace PayoutBot
 {
@@ -24,6 +27,10 @@ namespace PayoutBot
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDiscord(Configuration.GetSection("Discord"));
+
+            services.Configure<RefreshConfig>(Configuration.GetSection("Refresh"));
+            services.AddHostedService<RefreshPayouts>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
