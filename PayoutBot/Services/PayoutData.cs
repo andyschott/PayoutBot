@@ -9,18 +9,47 @@ using PayoutBot.Models;
 
 namespace PayoutBot.Services
 {
-    public class PayoutData
+    public class PayoutData : IDisposable
     {
-        private readonly Lazy<Task<IEnumerable<Player>>> _players;
+        private Lazy<Task<IEnumerable<Player>>> _players;
         private readonly string _payoutDataPath;
+        private FileSystemWatcher _watcher;
 
         public PayoutData(IOptions<RefreshConfig> config)
         {
             _payoutDataPath = config.Value.ShardDataPath;
-            _players = new Lazy<Task<IEnumerable<Player>>>(() => ParsePlayers(_payoutDataPath));
+            _players = InitPayoutData(_payoutDataPath);
+            
+            _watcher = new FileSystemWatcher
+            {
+                Path = Path.GetDirectoryName(_payoutDataPath),
+                Filter = Path.GetFileName(_payoutDataPath),
+                NotifyFilter = NotifyFilters.LastWrite
+            };
+            _watcher.Changed += OnPayoutDataChanged;
+            _watcher.EnableRaisingEvents = true;
+        }
+
+        public void Dispose()
+        {
+            if(_watcher != null)
+            {
+                _watcher.Dispose();
+                _watcher = null;
+            }
         }
 
         public Task<IEnumerable<Player>> GetData() => _players.Value;
+
+        private void OnPayoutDataChanged(object sender, FileSystemEventArgs e)
+        {
+            _players = InitPayoutData(e.FullPath);
+        }
+
+        private static Lazy<Task<IEnumerable<Player>>> InitPayoutData(string path)
+        {
+            return new Lazy<Task<IEnumerable<Player>>>(() => ParsePlayers(path));
+        }
 
         private static async Task<IEnumerable<Player>> ParsePlayers(string path)
         {
