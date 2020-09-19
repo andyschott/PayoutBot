@@ -31,6 +31,8 @@ namespace PayoutBot
 
             services.Configure<RefreshConfig>(Configuration.GetSection("Refresh"));
             services.AddHostedService<RefreshPayouts>();
+
+            services.AddSingleton<PayoutData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
