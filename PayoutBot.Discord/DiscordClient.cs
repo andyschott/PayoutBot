@@ -29,6 +29,7 @@ namespace PayoutBot.Discord
 
         public async Task Login()
         {
+            _logger.LogInformation("Logging in to Discord");
             await _client.LoginAsync(TokenType.Bot, _config.Value.Token);
             await _client.StartAsync();
             _client.Ready += OnReady;
@@ -36,6 +37,8 @@ namespace PayoutBot.Discord
 
         public async Task UpdatePayouts(IEnumerable<Player> players)
         {
+            _logger.LogInformation("Updating payouts");
+            
             if(_message == null)
             {
                 _logger.LogInformation("No message found in channel, returning");
