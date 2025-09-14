@@ -4,7 +4,7 @@
     <ProjectReference Include="..\PayoutBot.Discord\PayoutBot.Discord.csproj" />
   </ItemGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <UserSecretsId>a1063356-edc3-4e1c-b547-fef10bcd95de</UserSecretsId>
   </PropertyGroup>
 </Project>
