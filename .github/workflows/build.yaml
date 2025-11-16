@@ -12,3 +12,13 @@ jobs:
       with:
         dotnet-version: '9.0.x'
     - run: dotnet build --configuration Release
+    - uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+    - name: Publish Container
+      env:
+        ContainerRegistry: ghcr.io
+        ContainerRepository: ${{ github.repository }}
+      run: dotnet publish PayoutBot/PayoutBot.csproj --os linux --arch x64 /t:PublishContainer
