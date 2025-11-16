@@ -21,4 +21,4 @@ jobs:
       env:
         ContainerRegistry: ghcr.io
         ContainerRepository: ${{ github.repository }}
-      run: dotnet publish PayoutBot/PayoutBod.csproj --os linux --arch x64 /t:PublishContainer
+      run: dotnet publish PayoutBot/PayoutBot.csproj --os linux --arch x64 /t:PublishContainer
