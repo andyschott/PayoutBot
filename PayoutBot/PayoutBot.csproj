@@ -4,7 +4,14 @@
     <ProjectReference Include="..\PayoutBot.Discord\PayoutBot.Discord.csproj" />
   </ItemGroup>
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UserSecretsId>a1063356-edc3-4e1c-b547-fef10bcd95de</UserSecretsId>
   </PropertyGroup>
+  <PropertyGroup>
+    <ContainerRegistry>ghcr.io</ContainerRegistry>
+    <ContainerImageTag>$(GITHUB_SHA)</ContainerImageTag>
+  </PropertyGroup>
+  <ItemGroup>
+    <ContainerLabel Include="com.docker.extension.publisher-url" Value="$(GITHUB_SERVER_URL)/$(GITHUB_REPOSITORY_OWNER)" />
+  </ItemGroup>
 </Project>

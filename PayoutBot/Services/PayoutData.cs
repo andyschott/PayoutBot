@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PayoutBot.Discord.Models;
 using PayoutBot.Models;
@@ -51,9 +52,9 @@ namespace PayoutBot.Services
             return new Lazy<Task<IEnumerable<Player>>>(() => ParsePlayers(path));
         }
 
-        private static async Task<IEnumerable<Player>> ParsePlayers(string path)
+        private async static Task<IEnumerable<Player>> ParsePlayers(string path)
         {
-            using var stream = new FileStream(path, FileMode.Open);
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             var players = await JsonSerializer.DeserializeAsync<IEnumerable<Player>>(stream);
 
             return players;

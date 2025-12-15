@@ -109,8 +109,10 @@ namespace PayoutBot.Discord
             }
             else
             {
-                _message = messages.First() as IUserMessage;
-                if(_message.Embeds.Count == 0)
+                _message = messages.OfType<IUserMessage>()
+                    .Where(message => message.Embeds.Count > 0)
+                    .FirstOrDefault();
+                if(_message?.Embeds.Count == 0)
                 {
                     _logger.LogInformation("Deleting message without any embeds and creating a new message for payouts");
 
