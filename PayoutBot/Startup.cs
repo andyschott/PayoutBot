@@ -30,7 +30,7 @@ namespace PayoutBot
             services.AddDiscord(Configuration.GetSection("Discord"));
 
             services.Configure<RefreshConfig>(Configuration.GetSection("Refresh"));
-            services.AddHostedService<RefreshPayouts>();
+//            services.AddHostedService<RefreshPayouts>();
 
             services.AddSingleton<PayoutData>();
         }
