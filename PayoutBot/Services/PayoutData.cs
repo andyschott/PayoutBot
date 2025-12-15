@@ -14,11 +14,9 @@ namespace PayoutBot.Services
     {
         private Lazy<Task<IEnumerable<Player>>> _players;
         private readonly string _payoutDataPath;
-        private readonly ILogger<PayoutData> _logger;
         private FileSystemWatcher _watcher;
 
-        public PayoutData(IOptions<RefreshConfig> config,
-          ILogger<PayoutData> logger)
+        public PayoutData(IOptions<RefreshConfig> config)
         {
             _payoutDataPath = config.Value.ShardDataPath;
             _players = InitPayoutData(_payoutDataPath);
@@ -31,7 +29,6 @@ namespace PayoutBot.Services
             };
             _watcher.Changed += OnPayoutDataChanged;
             _watcher.EnableRaisingEvents = true;
-            _logger = logger;
         }
 
         public void Dispose()
@@ -50,21 +47,13 @@ namespace PayoutBot.Services
             _players = InitPayoutData(e.FullPath);
         }
 
-        private Lazy<Task<IEnumerable<Player>>> InitPayoutData(string path)
+        private static Lazy<Task<IEnumerable<Player>>> InitPayoutData(string path)
         {
             return new Lazy<Task<IEnumerable<Player>>>(() => ParsePlayers(path));
         }
 
-        private async Task<IEnumerable<Player>> ParsePlayers(string path)
+        private async static Task<IEnumerable<Player>> ParsePlayers(string path)
         {
-            if (!File.Exists(path))
-            {
-                _logger.LogWarning("Payout data file not found at path: {Path}", path);
-            }
-            else
-            {
-                _logger.LogInformation("Loading payout data from path: {Path}", path);
-            }
             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             var players = await JsonSerializer.DeserializeAsync<IEnumerable<Player>>(stream);
 
