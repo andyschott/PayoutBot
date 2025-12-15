@@ -57,17 +57,15 @@ namespace PayoutBot.Services
 
         private async Task<IEnumerable<Player>> ParsePlayers(string path)
         {
-            var loggingPath = Path.Combine(Directory.GetCurrentDirectory(),
-              path);
             if (!File.Exists(path))
             {
-                _logger.LogWarning("Payout data file not found at path: {Path}", loggingPath);
+                _logger.LogWarning("Payout data file not found at path: {Path}", path);
             }
             else
             {
-                _logger.LogInformation("Loading payout data from path: {Path}", loggingPath);
+                _logger.LogInformation("Loading payout data from path: {Path}", path);
             }
-            using var stream = new FileStream(path, FileMode.Open);
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             var players = await JsonSerializer.DeserializeAsync<IEnumerable<Player>>(stream);
 
             return players;
